@@ -1,11 +1,16 @@
 class DecodeGtfsRt < Formula
-  desc "Decode GTFS-RT feed into human-readable JSON format"
+  desc "Decode GTFS-RT feeds and save as human-readable JSON"
   homepage "https://github.com/colemccarren/homebrew-decode-gtfs-rt"
-  url "https://github.com/colemccarren/homebrew-decode-gtfs-rt/releases/download/0.2/decode-gtfs-rt.tar.gz"
-  sha256 "67f5828fa544dd463fbb5da2333774a638f3a9eebf582b6e0d7e391a5de7738f"
+  url "https://github.com/colemccarren/homebrew-decode-gtfs-rt/archive/v1.0.tar.gz"
+  sha256 "1ea414bdd415f0e42745f907ff617e4a9042f3b6e321315149e4326f57b14821"
 
   def install
+    # Ensure the shell script is installed correctly
     bin.install "decode_gtfs_rt.sh" => "decode"
+  end
+
+  test do
+    system "#{bin}/decode", "--help"
   end
 end
 

@@ -2,7 +2,7 @@ class DecodeGtfsRt < Formula
   desc "Decode GTFS-RT protobuf files to JSON"
   homepage "https://github.com/colemccarren/homebrew-decode-gtfs-rt"
   url "https://github.com/colemccarren/homebrew-decode-gtfs-rt/archive/v1.0.tar.gz"
-  sha256 "YOUR_TARBALL_SHA256_HASH"
+  sha256 "46fa1b4cfd2057fcc47d7930ce7fd31806b00615919d3e58cf90a55c2c0fdc00"
 
   depends_on "protobuf"  # Ensure Protobuf is installed
 

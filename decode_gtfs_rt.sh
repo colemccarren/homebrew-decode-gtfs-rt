@@ -1,21 +1,37 @@
 #!/bin/bash
 
-# Check if a file was provided
+# decode_gtfs_rt.sh
+# A script to decode a GTFS-RT protocol buffer file to JSON format
+
+# Check if required argument is provided
 if [ -z "$1" ]; then
-  echo "Usage: decode path/to/gtfs-rt-file.pb"
+  echo "Usage: $0 <local path or URL to GTFS-RT feed>"
   exit 1
 fi
 
-# Path to the GTFS-RT protobuf file
-PROTO_FILE="/usr/local/share/gtfs/gtfs-realtime.proto"
+INPUT="$1"
+TEMP_PROTO="/tmp/gtfs-realtime.proto"
+TEMP_FEED="/tmp/gtfs-rt-feed.pb"
+OUTPUT_FILE="$HOME/Downloads/decoded_gtfs_rt.json"
 
-# Check if the protobuf file exists in the expected shared directory
-if [ ! -f "$PROTO_FILE" ]; then
-  echo "Error: gtfs-realtime.proto not found in /usr/local/share/gtfs."
-  echo "Please make sure the file is available or reinstall the decode-gtfs-rt package."
-  exit 1
+# Download the latest gtfs-realtime.proto from the official Google repository
+echo "Downloading gtfs-realtime.proto..."
+curl -s -o "$TEMP_PROTO" "https://raw.githubusercontent.com/google/transit/master/gtfs-realtime/proto/gtfs-realtime.proto"
+
+# Check if input is a URL or a file
+if [[ "$INPUT" =~ ^https?:// ]]; then
+  # URL: download the feed
+  echo "Downloading GTFS-RT feed from URL..."
+  curl -s -o "$TEMP_FEED" "$INPUT"
+else
+  # Local file: copy the feed to the temp location
+  echo "Using local GTFS-RT feed file..."
+  cp "$INPUT" "$TEMP_FEED"
 fi
 
-# Run protoc to decode the GTFS-RT file into JSON
-protoc --proto_path=$(dirname "$PROTO_FILE") --decode_raw < "$1"
+# Decode the GTFS-RT feed to JSON
+echo "Decoding GTFS-RT feed..."
+protoc --proto_path=/tmp --decode=transit_realtime.FeedMessage "$TEMP_PROTO" < "$TEMP_FEED" > "$OUTPUT_FILE"
+
+echo "Decoded GTFS-RT feed saved to: $OUTPUT_FILE"
 

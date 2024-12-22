@@ -22,5 +22,5 @@ decode <local path or URL to GTFS-RT feed>
 - Can be passed local file paths as well as live feed URLs
     - If the URL has special characters, you might need to pass the URL in quotes like so:
         - “https://example.com/dev/example-gtfs-rt-feed&key12345.pb”
-- Downloads the decoded JSON to user’s Downloads folder
+- Downloads the decoded JSON to user’s Downloads folder. Local files are copied and appended with "-decoded". URL-based decodes are timestamped.
 - Nothing fancy 💫
